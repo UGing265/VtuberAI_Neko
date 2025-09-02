@@ -1,0 +1,7 @@
+pytchat
+openai==0.28
+pydub
+pyttsx3
+simpleaudio
+pyaudio
+ffmpeg

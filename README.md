@@ -1,6 +1,36 @@
 # AI-Vtuber
 This code is designed to read chat messages from YouTube and then utilize OpenAI's GPT-3 language model to generate responses. The output from GPT-3 is then read out loud using a TTS (Text-to-Speech) engine provided by ElevenLabs.
 
+# create a config.json
+```
+{
+    "keys": [
+        {
+            "EL_key":  "",
+            "OAI_key": ""
+        }
+    ],
+    "EL_data": [
+        {
+          "voice": "MF3mGyEYCl7XYWbV9V6O"
+        }
+
+    ],
+    "OAI_data": [
+        {
+          "model": "gpt-3.5-turbo-instruct",
+          "prompt": "This is how a toxic entitled evil female streamer responded in a conversation. She would respond in a toxic and rude manner. She would talk about the message and would elaborate on it as well as share some of her experiences if possible. She would also go on a tangent if possible.",
+          "temperature": 0.9,
+            "max_tokens": 128,
+            "top_p": 1,
+            "frequency_penalty": 1,
+            "presence_penalty": 1
+        }
+
+    ]
+}
+
+```
 
 
 # Setup

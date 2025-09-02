@@ -37,7 +37,7 @@ This code is designed to read chat messages from YouTube and then utilize OpenAI
 Install dependencies
 ```
 git clone https://github.com/UGing265/VtuberAI_Neko.git
-cd AI-Vtuber
+cd VtuberAI_Neko
 pip install -r requirements.txt
 ```
 It also requires [`ffmpeg`](https://ffmpeg.org/) to be installed

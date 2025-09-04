@@ -68,6 +68,8 @@ You can change the voice by changing `voice` in `config.json`. You can find the 
 
 ## EXTRA (IMPORTANT)
 FFMPEG IS REQUIRED: https://www.gyan.dev/ffmpeg/builds
+```
+```
 If you met local bot errors (TTS only works once) --> Switch to EL (run.py ->> parser.add_argument("-tts", "--tts_type", default="EL", choices=tts_list, type=str))
 
 # Live Demo

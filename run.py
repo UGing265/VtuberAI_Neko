@@ -80,7 +80,6 @@ def pyttsx3_TTS(message):
 
 
 def EL_TTS(message):
-
     url = f'https://api.elevenlabs.io/v1/text-to-speech/{EL.voice}'
     headers = {
         'accept': 'audio/mpeg',
@@ -95,9 +94,15 @@ def EL_TTS(message):
         }
     }
 
-    response = requests.post(url, headers=headers, json=data, stream=True)
-    audio_content = AudioSegment.from_file(io.BytesIO(response.content), format="mp3")
-    play(audio_content)
+    try:
+        response = requests.post(url, headers=headers, json=data, stream=True)
+        if response.status_code != 200:
+            print(f"ElevenLabs API error: {response.status_code} - {response.text}")
+            return
+        audio_content = AudioSegment.from_file(io.BytesIO(response.content), format="mp3")
+        play(audio_content)
+    except Exception as e:
+        print(f"EL_TTS error: {e}")
 
 
 def read_chat():
@@ -114,7 +119,7 @@ def read_chat():
             print(response)
             Controller_TTS(response)
 
-            if schat.get() >= 20:
+            if schat.get() >= 9000:
                 chat.terminate()
                 schat.terminate()
                 return

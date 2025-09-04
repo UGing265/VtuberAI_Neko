@@ -10,6 +10,22 @@ import io
 import pyttsx3
 import sys
 import argparse
+import graceful
+
+chat = None
+schat = None
+
+def cleanup():
+    """Được gọi khi Ctrl+C: dừng chat/ schat an toàn."""
+    global chat, schat
+    try:
+        if chat is not None:
+            chat.terminate()
+        if schat is not None:
+            schat.terminate()
+    except Exception:
+        pass
+
 
 def initTTS():
     global engine
@@ -101,12 +117,14 @@ def EL_TTS(message):
 
 
 def read_chat():
-
+    global chat, schat
     chat = pytchat.create(video_id=video_id)
     schat = pytchat.create(video_id=video_id, processor = SpeedCalculator(capacity = 20))
 
-    while chat.is_alive():
+    while graceful.running() and chat.is_alive():
         for c in chat.get().sync_items():
+            if not graceful.running():
+                break
             print(f"\n{c.datetime} [{c.author.name}]- {c.message}\n")
             message = c.message
 
@@ -114,13 +132,13 @@ def read_chat():
             print(response)
             Controller_TTS(response)
 
-            if schat.get() >= 20:
+            if schat.get() >= 700:
                 chat.terminate()
                 schat.terminate()
                 return
 
 
-            time.sleep(1)
+
 
 
 def llm(message):
@@ -143,9 +161,15 @@ def llm(message):
 
 if __name__ == "__main__":
     initVar()
-    print("\n\Running!\n\n")
+    graceful.install(on_shutdown=cleanup)
+    print("\n\nRunning!\n\n")
 
-    while True:
-        read_chat()
-        print("\n\nReset!\n\n")
-        time.sleep(2)
+    try:
+        while graceful.running():
+            read_chat()
+            if not graceful.running():
+                break
+            print("\n\nReset!\n\n")
+    finally:
+        cleanup()
+        print("Bye.")

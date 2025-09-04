@@ -42,6 +42,12 @@ pip install -r requirements.txt
 ```
 It also requires [`ffmpeg`](https://ffmpeg.org/) to be installed
 
+if you use window download this [`link`](https://github.com/GyanD/codexffmpeg/releases/tag/2025-09-04-git-2611874a50) and chose "essentials_build"
+
+you have to set up "edit environments" and link to file bin contains .exe 
+
+win + R -> cmd -> typing: ffmpeg (if it work u can run project now)
+
 # Usage
 
 Edit the variables `EL_key` and `OAI_key` in `config.json`

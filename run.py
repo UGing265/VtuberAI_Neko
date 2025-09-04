@@ -94,11 +94,17 @@ def EL_TTS(message):
             'similarity_boost': 0.75
         }
     }
+    try:
+        response = requests.post(url, headers=headers, json=data, stream=True)
+        response.raise_for_status()
+        if "audio" not in response.headers.get("content-type", "") or len(response.content) < 200:
+            print("EL rip:", response.text[:200])
+            return 
 
-    response = requests.post(url, headers=headers, json=data, stream=True)
-    audio_content = AudioSegment.from_file(io.BytesIO(response.content), format="mp3")
-    play(audio_content)
-
+        audio_content = AudioSegment.from_file(io.BytesIO(response.content), format="mp3")
+        play(audio_content)
+    except Exception as e:
+        print("EL rip:",e)
 
 def read_chat():
 
@@ -113,8 +119,7 @@ def read_chat():
             response = llm(message)
             print(response)
             Controller_TTS(response)
-
-            if schat.get() >= 20:
+            if schat.get() > 20: #set tốc độ chat khi nhiều tin nhắn gửi cùng lúc thì dừng
                 chat.terminate()
                 schat.terminate()
                 return
@@ -148,4 +153,4 @@ if __name__ == "__main__":
     while True:
         read_chat()
         print("\n\nReset!\n\n")
-        time.sleep(2)
+        time.sleep(1)
